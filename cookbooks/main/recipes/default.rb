@@ -12,3 +12,4 @@ end
 
 # uncomment to turn use the MBARI ruby patches for decreased memory usage and better thread/continuationi performance
 # require_recipe "mbari-ruby"
+require_recipe "mongodb"
