@@ -1,3 +1,5 @@
+#!/sbin/runscript
+
 depend() {
   use net
 }
