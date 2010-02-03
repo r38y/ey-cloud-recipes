@@ -1,0 +1,16 @@
+depend() {
+  use net
+}
+
+start() {
+  ebegin "Starting mongodb"
+  /usr/local/mongodb/bin/mongod --master --port 27017 --dbpath /data/masterdb/ > /dev/null 2>&1 &
+  /usr/local/mongodb/bin/mongod --slave --port 27018 --dbpath /data/slavedb/ > /dev/null 2>&1 &
+  eend $?
+}
+
+stop() {
+  ebegin "Stopping mongodb"
+  start-stop-daemon --stop --quiet --exec /usr/local/mongodb/bin/mongod
+  eend $?
+}
