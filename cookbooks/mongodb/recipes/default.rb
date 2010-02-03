@@ -3,7 +3,7 @@
 # Recipe:: default
 
 
-directory "/data/master" do
+directory "/data/masterdb" do
   owner node[:owner_name]
   group node[:owner_name]
   mode 0755
@@ -13,7 +13,7 @@ end
 
 # The recipe is not using a slave yet but it will create the directory
 # so that it is there for the future
-directory "/data/slave" do
+directory "/data/slavedb" do
   owner node[:owner_name]
   group node[:owner_name]
   mode 0755
