@@ -8,7 +8,7 @@ directory "/data/master" do
   group node[:owner_name]
   mode 0755
   recursive true
-  not_if { File.directory?('/data/master') }
+  not_if { File.directory?('/data/masterdb') }
 end
 
 # The recipe is not using a slave yet but it will create the directory
@@ -18,7 +18,7 @@ directory "/data/slave" do
   group node[:owner_name]
   mode 0755
   recursive true
-  not_if { File.directory?('/data/slave') }
+  not_if { File.directory?('/data/slavedb') }
 end
   
 execute "install-mongodb" do
