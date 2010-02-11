@@ -3,7 +3,7 @@
 
 size = `curl -s http://instance-data.ec2.internal/latest/meta-data/instance-type`
 package_tgz = case size
-when /m1.small/# || /c1.medium/ # 32 bit
+when /m1.small/ || /c1.medium/ # 32 bit
   'mongodb-linux-i686-1.2.2.tgz'
 else # 64 bit
   'mongodb-linux-x86_64-1.2.2.tgz'
@@ -27,11 +27,16 @@ directory "/data/slavedb" do
 end
   
 execute "install-mongodb" do
+  # command %Q{
+  #   curl -O http://downloads.mongodb.org/linux/#{package_tgz} &&
+  #   tar zxvf #{package_tgz} &&
+  #   mv #{package_folder} /usr/local/mongodb &&
+  #   rm #{package_tgz}
+  # }
   command %Q{
     curl -O http://downloads.mongodb.org/linux/#{package_tgz} &&
     tar zxvf #{package_tgz} &&
-    mv #{package_folder} /usr/local/mongodb &&
-    rm #{package_tgz}
+    mv #{package_folder} /usr/local/mongodb
   }
   not_if { File.directory?('/usr/local/mongodb') }
 end
