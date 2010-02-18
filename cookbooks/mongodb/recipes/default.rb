@@ -10,33 +10,28 @@ else # 64 bit
 end
 package_folder = package_tgz.gsub('.tgz', '')
 
-directory "/data/masterdb" do
+directory "/db/mongodb/master" do
   owner node[:owner_name]
   group node[:owner_name]
   mode 0755
   recursive true
-  not_if { File.directory?('/data/masterdb') }
+  not_if { File.directory?('/db/mongodb/master') }
 end
 
-directory "/data/slavedb" do
+directory "/db/mongodb/slave" do
   owner node[:owner_name]
   group node[:owner_name]
   mode 0755
   recursive true
-  not_if { File.directory?('/data/slavedb') }
+  not_if { File.directory?('/db/mongodb/slave') }
 end
   
 execute "install-mongodb" do
-  # command %Q{
-  #   curl -O http://downloads.mongodb.org/linux/#{package_tgz} &&
-  #   tar zxvf #{package_tgz} &&
-  #   mv #{package_folder} /usr/local/mongodb &&
-  #   rm #{package_tgz}
-  # }
   command %Q{
     curl -O http://downloads.mongodb.org/linux/#{package_tgz} &&
     tar zxvf #{package_tgz} &&
-    mv #{package_folder} /usr/local/mongodb
+    mv #{package_folder} /usr/local/mongodb &&
+    rm #{package_tgz}
   }
   not_if { File.directory?('/usr/local/mongodb') }
 end
