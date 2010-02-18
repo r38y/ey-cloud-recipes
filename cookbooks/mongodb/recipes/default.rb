@@ -64,3 +64,15 @@ if node[:instance_role] == 'db_master'
     not_if "pgrep mongod"
   end
 end
+
+node[:applications].each do |app_name,data|
+  template "/data/#{app_name}/shared/config/mongodb.yml" do
+    source "mongodb.yml.erb"
+    owner user[:username]
+    group user[:username]
+    mode 0744
+    variables({
+      :app_name => app_name
+    })
+  end
+end
