@@ -68,8 +68,8 @@ end
 node[:applications].each do |app_name,data|
   template "/data/#{app_name}/shared/config/mongodb.yml" do
     source "mongodb.yml.erb"
-    owner user[:username]
-    group user[:username]
+    owner node[:owner_name]
+    group node[:owner_name]
     mode 0744
     variables({
       :app_name => app_name
