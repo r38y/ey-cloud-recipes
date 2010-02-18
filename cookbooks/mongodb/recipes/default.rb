@@ -65,14 +65,16 @@ if node[:instance_role] == 'db_master'
   end
 end
 
-node[:applications].each do |app_name,data|
-  template "/data/#{app_name}/shared/config/mongodb.yml" do
-    source "mongodb.yml.erb"
-    owner node[:owner_name]
-    group node[:owner_name]
-    mode 0744
-    variables({
-      :app_name => app_name
-    })
+if node[:instance_role] == 'app_master'
+  node[:applications].each do |app_name,data|
+    template "/data/#{app_name}/shared/config/mongodb.yml" do
+      source "mongodb.yml.erb"
+      owner node[:owner_name]
+      group node[:owner_name]
+      mode 0744
+      variables({
+        :app_name => app_name
+      })
+    end
   end
 end
