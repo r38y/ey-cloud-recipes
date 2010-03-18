@@ -87,7 +87,7 @@ if node[:instance_role] == 'db_master'
     day      '*'
     month    '*'
     weekday  '*'
-    command  "/usr/local/bin/mongodb_backup"
+    command  "/usr/local/bin/mongodb_backup /data/mongodbbackups"
     not_if { node[:backup_window].to_s == '0' }
   end
 end
