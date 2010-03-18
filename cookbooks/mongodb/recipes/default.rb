@@ -1,3 +1,13 @@
+cron_hour =  if node[:backup_interval].to_s == '24'
+    "1"    # 0100 Pacific, per support's request
+    # NB: Instances run in the Pacific (Los Angeles) timezone
+  elsif node[:backup_interval]
+    "*/#{node[:backup_interval]}"
+  else
+    "1"
+  end
+
+
 # Cookbook Name:: mongodb
 # Recipe:: default
 if node[:instance_role] == 'db_master' 
@@ -93,16 +103,5 @@ if node[:instance_role] == 'app_master'
         :app_name => app_name
       })
     end
-  end
-end
-
-def cron_hour
-  if node[:backup_interval].to_s == '24'
-    "1"    # 0100 Pacific, per support's request
-    # NB: Instances run in the Pacific (Los Angeles) timezone
-  elsif node[:backup_interval]
-    "*/#{node[:backup_interval]}"
-  else
-    "1"
   end
 end
