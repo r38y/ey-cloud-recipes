@@ -63,6 +63,25 @@ if node[:instance_role] == 'db_master'
     }
     not_if "pgrep mongod"
   end
+  
+  remote_file "/usr/local/bin/mongodb_backup" do
+    source "mongodb_backup"
+    owner "admin"
+    group "admin"
+    mode 0755
+  end
+  
+  # if ['db_slave'].include?(node[:instance_role])
+  #   cron "eybackup" do
+  #     minute   '10'
+  #     hour     cron_hour
+  #     day      '*'
+  #     month    '*'
+  #     weekday  '*'
+  #     command  "eybackup"
+  #     not_if { node[:backup_window].to_s == '0' }
+  #   end  
+  # end
 end
 
 if node[:instance_role] == 'app_master'
