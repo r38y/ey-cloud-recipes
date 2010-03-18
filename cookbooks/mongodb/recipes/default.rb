@@ -66,22 +66,20 @@ if node[:instance_role] == 'db_master'
   
   remote_file "/usr/local/bin/mongodb_backup" do
     source "mongodb_backup"
-    owner "admin"
-    group "admin"
+    owner "root"
+    group "root"
     mode 0755
   end
   
-  # if ['db_slave'].include?(node[:instance_role])
-  #   cron "eybackup" do
-  #     minute   '10'
-  #     hour     cron_hour
-  #     day      '*'
-  #     month    '*'
-  #     weekday  '*'
-  #     command  "eybackup"
-  #     not_if { node[:backup_window].to_s == '0' }
-  #   end  
-  # end
+  cron "mongodb_backup" do
+    minute   '10'
+    hour     cron_hour
+    day      '*'
+    month    '*'
+    weekday  '*'
+    command  "/usr/local/bin/mongodb_backup"
+    not_if { node[:backup_window].to_s == '0' }
+  end
 end
 
 if node[:instance_role] == 'app_master'
@@ -95,5 +93,16 @@ if node[:instance_role] == 'app_master'
         :app_name => app_name
       })
     end
+  end
+end
+
+def cron_hour
+  if node[:backup_interval].to_s == '24'
+    "1"    # 0100 Pacific, per support's request
+    # NB: Instances run in the Pacific (Los Angeles) timezone
+  elsif node[:backup_interval]
+    "*/#{node[:backup_interval]}"
+  else
+    "1"
   end
 end
