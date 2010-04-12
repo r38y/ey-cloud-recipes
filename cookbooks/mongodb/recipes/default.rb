@@ -12,11 +12,12 @@ cron_hour =  if node[:backup_interval].to_s == '24'
 # Recipe:: default
 if node[:instance_role] == 'db_master' 
   size = `curl -s http://instance-data.ec2.internal/latest/meta-data/instance-type`
+  version = '1.4.0'
   package_tgz = case size
   when /m1.small|c1.medium/ # 32 bit
-    'mongodb-linux-i686-1.2.2.tgz'
+    "mongodb-linux-i686-#{version}.tgz"
   else # 64 bit
-    'mongodb-linux-x86_64-1.2.2.tgz'
+    "mongodb-linux-x86_64-#{version}.tgz"
   end
   package_folder = package_tgz.gsub('.tgz', '')
 
@@ -43,7 +44,7 @@ if node[:instance_role] == 'db_master'
       mv #{package_folder} /usr/local/mongodb &&
       rm #{package_tgz}
     }
-    not_if { File.directory?('/usr/local/mongodb') }
+    not_if { File.directory?('/usr/local/mongodb') && %x{/usr/local/mongodb --version} =~ /#{version}/ }
   end
   
   execute "add-to-path" do
