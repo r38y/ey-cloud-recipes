@@ -44,7 +44,7 @@ if node[:instance_role] == 'db_master'
       mv #{package_folder} /usr/local/mongodb &&
       rm #{package_tgz}
     }
-    not_if { File.directory?('/usr/local/mongodb')
+    not_if { File.directory?('/usr/local/mongodb') }
   end
   
   execute "add-to-path" do
