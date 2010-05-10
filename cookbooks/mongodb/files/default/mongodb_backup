@@ -11,8 +11,10 @@ unless File.exists?(file_path)
   FileUtils.mkdir_p(file_path)
 end
 
+FileUtils.mkdir_p(full_path)
+
 puts "Dumping all mongodb databases"
-%x{mongodump -o #{full_path}}
+%x{/usr/local/mongodb/bin/mongodump -o #{full_path}}
 
 puts "Taring mongodb dump"
 %x{tar -cvvjf #{full_path}.tar.bz2 #{full_path}/}
