@@ -12,7 +12,7 @@ cron_hour =  if node[:backup_interval].to_s == '24'
 # Recipe:: default
 if node[:instance_role] == 'db_master' 
   size = `curl -s http://instance-data.ec2.internal/latest/meta-data/instance-type`
-  version = '1.4.0'
+  version = '1.4.2'
   package_tgz = case size
   when /m1.small|c1.medium/ # 32 bit
     "mongodb-linux-i686-#{version}.tgz"
