@@ -6,8 +6,8 @@ depend() {
 
 start() {
   ebegin "Starting mongodb"
-  /usr/local/mongodb/bin/mongod --master --port 27017 --dbpath /db/mongodb/master/ > /dev/null 2>&1 &
-  /usr/local/mongodb/bin/mongod --slave --source localhost --syncdelay 5 --port 27018 --dbpath /db/mongodb/slave/ > /dev/null 2>&1 &
+  /usr/local/mongodb/bin/mongod --master --port 27017 --dbpath /db/mongodb/master/ --logpath /var/log/mongodb-master.log --logappend > /dev/null 2>&1 &
+  /usr/local/mongodb/bin/mongod --slave --source localhost --syncdelay 5 --port 27018 --dbpath /db/mongodb/slave/ --logpath /var/log/mongodb-slave.log --logappend > /dev/null 2>&1 &
   eend $?
 }
 
