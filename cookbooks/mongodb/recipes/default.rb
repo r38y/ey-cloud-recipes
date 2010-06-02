@@ -60,6 +60,14 @@ if node[:instance_role] == 'db_master'
     group "root"
     mode 0755
   end
+  
+  remote_file "/etc/logrotate.d/mongodb" do
+    owner "root"
+    group "root"
+    mode 0755
+    source "mongodb.logrotate"
+    action :create
+  end
 
   execute "add-mongodb-to-default-run-level" do
     command %Q{
