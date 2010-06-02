@@ -37,6 +37,14 @@ if node[:instance_role] == 'db_master'
     not_if { File.directory?('/db/mongodb/slave') }
   end
   
+  directory "/var/log/mongodb" do
+    recursive true
+    owner node[:owner_name]
+    group node[:owner_name]
+    mode 0755
+    not_if { File.directory?('/var/log/mongodb') }
+  end
+  
   execute "install-mongodb" do
     command %Q{
       curl -O http://downloads.mongodb.org/linux/#{package_tgz} &&
