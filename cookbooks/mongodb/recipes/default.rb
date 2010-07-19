@@ -10,7 +10,7 @@ cron_hour =  if node[:backup_interval].to_s == '24'
 
 # Cookbook Name:: mongodb
 # Recipe:: default
-if node[:instance_role] == 'db_master' 
+if ['db_master', 'solo'].include?(node[:instance_role])
   size = `curl -s http://instance-data.ec2.internal/latest/meta-data/instance-type`
   version = '1.4.3'
   package_tgz = case size
@@ -109,7 +109,7 @@ if node[:instance_role] == 'db_master'
   end
 end
 
-if node[:instance_role] == 'app_master'
+if ['app_master', 'solo'].include?(node[:instance_role])
   node[:applications].each do |app_name,data|
     template "/data/#{app_name}/shared/config/mongodb.yml" do
       source "mongodb.yml.erb"
