@@ -21,3 +21,11 @@ puts "Taring mongodb dump"
 
 puts "Removing uncompressed dump"
 %x{rm -rf #{full_path}}
+
+keep = 7
+all_files = Dir.glob("/db/mongodbbackups/*.tar.bz2").sort
+puts "Removing all but the last #{keep} backup files"
+all_files[0...-keep].each do |file|
+  puts "Removing #{file}"
+  File.unlink file
+end
